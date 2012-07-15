@@ -1,0 +1,1 @@
+slogger is program logger, support logging into mysql db, regular file, and print to stdout, use XML configure style.
