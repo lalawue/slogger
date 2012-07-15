@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE slog:configuration>
+<slog:configuration>
+
+  <logger name="tester"> <!-- program / module name -->
+
+    <appender value="stdout">
+    </appender>
+
+    <appender value="database">
+      <!-- assume logs any level -->
+      <schema name="syslog" />
+      <table name="test_logs" />
+      <format>
+        <field name="priority" format="_%s_" /> <!-- bytes -->
+	<field name="text"   format="hello___"/>
+        <field name="date" format="%y/%m/%d" />  <!-- string -->
+        <field name="time" format="%H:%M" />     <!-- string -->
+        <field name="message" format="msg: " /> <!-- prefix -->
+      </format>
+    </appender> <!-- database -->
+
+  </logger>
+
+</slog:configuration>

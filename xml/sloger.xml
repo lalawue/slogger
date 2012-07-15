@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE slog:configuration>
+<slog:configuration>
+
+  <logger name="tester"> <!-- program / module name -->
+
+    <appender value="stdout">
+      <priority value="debug" /> <!-- only logs debug -->
+      <format>
+        <field name="name" format="%s..."/>        <!-- logger name -->
+        <field name="priority" format="%s "/> <!-- string -->
+	<field name="date" format="_%y/%m/%d, " />  <!-- string -->
+	<field name="time" format="%H:%M_" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- stdout, did not go through server -->
+
+    <appender value="file">
+      <level value="info" /> <!-- logs pri>= info -->
+      <path value="/home" /> <!-- full path dir, or use default -->
+      <!-- no file name specified, use default -->
+      <rolling type="size" value="10" /> <!-- kbytes -->
+      <!-- use the default format -->
+    </appender> <!-- file -->
+
+
+    <appender value="file">
+      <level value="debug"/>
+      <path value="/tmp/" /> <!-- full path dir, or use default -->
+      <rolling type="size" value="30" /> <!-- days -->
+      <filename type="date" value="%Y-%m-%d" />
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format=" .%s. "/> <!-- string -->
+        <field name="date" format="%y/%m/%d" />  <!-- string -->
+        <field name="time" format="%H:%M" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- file -->
+
+
+    <appender value="database">
+      <!-- assume logs any level -->
+      <schema name="syslog" />
+      <table name="logs" />
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format="_%s_" /> <!-- bytes -->
+        <field name="date" format="%y/%m/%d" />  <!-- string -->
+        <field name="message" format="msg: " /> <!-- prefix -->
+      </format>
+    </appender> <!-- database -->
+
+  </logger>
+
+</slog:configuration>

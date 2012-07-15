@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE slog:configuration>
+<slog:configuration>
+
+  <logger name="tester"> <!-- program / module name -->
+
+    <appender value="stdout">
+      <priority value="debug" /> <!-- only logs debug -->
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format="%s "/> <!-- string -->
+	<field name="date" format="_%y/%m/%d, " />  <!-- string -->
+	<field name="time" format="%H:%M_" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- stdout, did not go through server -->
+
+    <appender value="file">
+      <!-- assume logs any level -->
+      <path value="/tmp/" /> <!-- full path dir, or use default -->
+      <rolling type="size" value="10" /> <!-- kbytes -->
+      <filename type="date" value="%Y-%m-%d" />
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format=" .%s. "/> <!-- string -->
+        <field name="date" format="%y/%m/%d___" />  <!-- string -->
+        <field name="time" format="%H:%M~~" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- file -->
+
+  </logger>
+
+</slog:configuration>

@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE slog:configuration>
+<slog:configuration>
+
+  <!-- 设置 XML 配置文件的例子-->
+
+  <logger name="slogger">                           <!-- logger 的名字，可自由设置 -->
+
+    <appender value="stdout">                       <!-- 设置输出到标准输出 -->
+      <priority value="debug" />                    <!-- 记录日志紧急程度包含 debug 及以上 -->
+      <format>
+        <field name="text"   format="__vv__"/>      <!-- 普通的 text，不需展开-->
+        <field name="logger" format="%s..."/>       <!-- 展开前面设置的 logger name -->
+        <field name="priority" format="%s "/>       <!-- priority 栏的输出格式 -->
+	    <field name="date" format="_%y/%m/%d, " />  <!-- date 栏的输出格式 -->
+	    <field name="time" format="%H:%M_" />       <!-- 同 date 栏，man strftime 查看设置 -->
+        <field name="message" format=" : "/>        <!-- message 栏的_前缀_ -->
+      </format>
+    </appender>
+    
+    
+    <appender value="file"> <!-- 设置输出到文件 -->
+      <!-- 默认记录所有的日志，即设置 priority 为 'debug' -->
+      <!-- 存放于默认的路径 /var/log/Jabsco，若路径不存在，则报错 -->
+      <!-- 未指定文件名，默认使用 logger 的名字 -->
+      <!-- 默认不对文件进行 rolling -->
+      <!-- 使用默认的格式 -->
+    </appender>
+
+
+    <appender value="file">                       <!-- 输出到文件 -->
+      <level value="debug"/>                      <!-- 仅记录紧急程度为 debug 的日志 -->
+      <path value="/tmp/" />                      <!-- 文件路径，默认是 /var/log/Jabsco/ -->
+      <rolling type="size" value="30" />          <!-- 对 size 进行 rolling -->
+      <filename type="date" value="%Y-%m-%d" />   <!-- 文件名为日期格式-->
+      <format>
+        <field name="priority" format=" .%s. "/>
+        <field name="date" format="%y/%m/%d, " />
+        <field name="time" format="%H:%M" />
+        <field name="message" format=" : "/>
+        <field name="logger" format="%s."/>
+      </format>
+    </appender>
+
+
+    <appender value="database">
+      <priority value="debug" />
+      <schema name="syslog" />                  <!-- 连接的数据库名，若不存在，会自动创建 -->
+      <table name="logs" />                     <!-- 插入的表名，若表不存在，会自动创建 -->
+      <format>
+        <field name="priority" format="_%s_" /> <!-- 不需设置插入mysql类型及长度，程序会自动判断 -->
+        <field name="name" format="%s."/>
+        <field name="date" format="%y/%m/%d" />
+        <field name="message" format="msg: " />
+      </format>
+    </appender>
+    
+    
+    <!-- 选项的详细例子 -->
+    <appender value="stderr">  <!-- 可设置为 (stdout, stderr, file, database) -->
+    
+      
+      <!-- 所有 appender 都支持的选项 -->
+      <level value="info" />     <!-- 可设置为 (emerg，alert，crit，err，warning，notice，info，debug) -->
+      <priority value="emerg" /> <!-- 同上 -->
+      <format>
+        <field name="" format="" />
+        <!-- name 可设置为 (text, logger, priority, date, time, message) -->
+      </format>
+      <!-- end of all -->
+      
+      
+      <!-- file appender 支持的选项 -->
+      <path value="" /> <!-- 自由设置，与 filename 一起展开后小于 255 bytes -->
+      <filename type="" value="" /> <!-- type 可设置为 (logger, date, name) -->
+      <rolling type="" value="" /> <!-- type 可设置为 (size)，单位为 kbytes -->
+      <!-- end of file appender -->
+      
+      
+      <!-- database appender 支持的选项 -->
+      <schema value="" /> <!-- 自由设置，长度小于 128 byte -->
+      <table value="" />  <!-- 自由设置，长度小于 128 byte -->
+      <!-- end of database appender -->
+      
+    </appender>
+
+  </logger>
+  
+  
+  <!-- 调试模式: export SLOG_DEBUG=1 即可打开 client/server 的 debug 模式 -->
+  
+  
+  
+  <!-- 日志记录到 database 需要做的配置  
+     
+     1. 创建/设置 server 端 mysql 用户，设置密码
+     2. 跑 server 端
+
+     
+     * 创建 mysql 用户
+     
+     命令格式：GRANT  用户可使用的sql命令  ON  数据库.表  TO  用户名@localhost
+     
+     grant create,select,insert,update,delete,drop on 数据库.表 to 用户名@localhost;
+
+
+     * 增加用户名、密码的命令：
+     
+     use mysql     
+     UPDATE user SET password=PASSWORD("密码") WHERE user='用户名';
+     FLUSH PRIVILEGES;
+     quit
+
+
+     * 设置 server 端的用户名及密码
+
+     使用环境变量给 server 传递用户名及密码，如下
+
+     export SLOG_USER="用户名"
+     export SLOG_PASSWORD="密码"
+  -->
+
+</slog:configuration>

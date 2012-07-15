@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE slog:configuration>
+<slog:configuration>
+
+  <logger name="tester"> <!-- program / module name -->
+
+    <appender value="file">
+      <level value="debug"/>
+      <path value="/tmp/" /> <!-- full path dir, or use default -->
+      <rolling type="size" value="30" /> <!-- days -->
+      <filename type="date" value="%y-%m-%d_0" />
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format=" .%s. "/> <!-- string -->
+        <field name="date" format="%y/%m/%d" />  <!-- string -->
+        <field name="time" format="%H:%M" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- file -->
+
+    <appender value="file">
+      <level value="info"/>
+      <path value="/tmp/" /> <!-- full path dir, or use default -->
+      <rolling type="size" value="300" /> <!-- days -->
+      <filename type="date" value="%y-%m-%d_1" />
+      <format>
+        <field name="name" format="%s."/>        <!-- logger name -->
+        <field name="priority" format=" .%s. "/> <!-- string -->
+        <field name="date" format="%y/%m/%d" />  <!-- string -->
+        <field name="time" format="%H:%M" />     <!-- string -->
+        <field name="message" format=" : "/>   <!-- prefix -->
+      </format>
+    </appender> <!-- file -->
+    
+
+    <appender value="file">
+      <path value="/tmp" /> <!-- full path dir, or use default -->
+      <!-- no file name specified, use default -->
+      <rolling type="size" value="5" /> <!-- kbytes -->
+      <filename type="date" value="%y-%m-%d_2" />
+      <!-- use the default format -->
+    </appender> <!-- file -->
+
+    <appender value="file">
+   </appender>
+
+  </logger>
+
+</slog:configuration>
